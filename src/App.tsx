@@ -3,17 +3,18 @@ import OrderContents from "./components/OrderContents"
 import OrderTotals from "./components/OrderTotals"
 import { menuItems } from "./data/db"
 import useOrder from "./hooks/useOrder"
+import TipPercentage from "./components/TipPercentage"
 
 function App() {
 
-  const {order, addItem, removeItem} = useOrder()
+  const { order, tip, setTip, addItem, removeItem, placeOrder } = useOrder()
 
   return (
     <>
-      <header className="bg-teal-500 py-3">
-        <h1 className="text-center text-4xl font-black">Calculator Tips</h1>
+      <header className="bg-rose-900 py-3">
+        <h1 className="text-white text-center text-4xl font-black">Pizza & Co.</h1>
       </header>
-      <main className="bg-red-100 max-w-6xl mx-auto py-20 grid md:grid-cols-2">
+      <main className="bg-rose-400 max-w-6xl mx-auto py-20 grid md:grid-cols-2 gap-1">
         <div className="p-5">
           <h2 className="text-center text-4xl font-black">Menú</h2>
           <div className="space-y-3 mt-10">
@@ -27,14 +28,32 @@ function App() {
             ))}
           </div>
         </div>
-        <div className="border border-dashed border-salte-300 p-5 rounded-lg space-y-10">
-          <OrderContents
-            order={order}
-            removeItem={removeItem}
-          />
-          <OrderTotals
-            
-          />
+        <div className="p-5">
+          <h2 className="text-center font-black text-4xl">Consumo</h2>
+          <div className="bg-red-100 border-4 border-dashed border-salte-300 p-5 rounded-lg space-y-3 mt-10">
+            {order.length > 0 ? (
+              <>
+                <OrderContents
+                  order={order}
+                  removeItem={removeItem}
+                />
+                <div className="border-t-2 border-rose-800"></div>
+                <TipPercentage
+                  setTip={setTip}
+                  tip={tip}
+                />
+                <div className="border-t-2 border-rose-800"></div>
+                <OrderTotals
+                  order={order}
+                  tip={tip}
+                  placeOrder={placeOrder}
+                />
+              </>
+            ): (
+              <p className="text-center">La orden esta vacia</p> 
+            )}
+
+          </div>
         </div>
       </main>
     </>
